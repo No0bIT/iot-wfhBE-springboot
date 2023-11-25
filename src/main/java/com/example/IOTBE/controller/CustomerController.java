@@ -90,6 +90,7 @@ public class CustomerController {
 		notifications.add(notification);
 	    bodyCustomer.setNotifications(notifications);	    
 		customerRepository.save(bodyCustomer);	
+		notificationRepository.save(notification);
 		predictionService.createDataTrainCus(bodyCustomer.getId());
 		
 		return bodyCustomer.getId();
