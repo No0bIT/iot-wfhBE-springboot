@@ -46,6 +46,10 @@ public class StepController {
 		Daily daily= customer.getDailys().stream() // Stream từ danh sách Daily của Customer
                 .max(Comparator.comparingLong(Daily::getId)) // Tìm Daily có id lớn nhất
                 .orElse(null);
+		int countStep=step.getStep()-daily.getTotalStep();
+		countStep = countStep>=0?countStep:0;
+		step.setStep(countStep);
+		
 		int checkNotification =daily.getTotalStep()+step.getStep();
 		if(checkNotification>=daily.getPredictionStep())
 		{
