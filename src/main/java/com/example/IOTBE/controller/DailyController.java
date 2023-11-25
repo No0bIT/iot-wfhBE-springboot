@@ -1,5 +1,6 @@
 package com.example.IOTBE.controller;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -44,19 +45,26 @@ public class DailyController {
 		List<Daily> dailys= customer.getDailys();
 		List<Daily> dailyAns= new ArrayList<>();
 		Collections.sort(dailys, Comparator.comparingInt(Daily::getId).reversed());
+		LocalDate dateLate=LocalDate.now();
 		for(Daily daily:dailys) {
 			dailyAns.add(daily);
+			dateLate= daily.getDate();
 			if(dailyAns.size()==7)
 				break;
 		}
 		int x=dailyAns.size();
+		dateLate=dateLate.minusDays(7-x+1);
 		if(x<7){
 			for(int i=0;i<7-x;i++)
 			{
 				Daily xDaily=  new Daily();
+				dateLate=dateLate.plusDays(1);
+				xDaily.setDate(dateLate);
+				xDaily.setId(0);
 				dailyAns.add(xDaily);
 			}
 		}
+		Collections.sort(dailyAns, Comparator.comparingInt(Daily::getId));
 		return dailyAns;
 	}
 }
