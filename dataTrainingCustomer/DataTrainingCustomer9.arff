@@ -1,0 +1,9 @@
+@relation NewDaily
+
+@attribute dayOTW numeric
+@attribute weather numeric
+@attribute temperature numeric
+@attribute humidity numeric
+@attribute totalStep numeric
+
+@data

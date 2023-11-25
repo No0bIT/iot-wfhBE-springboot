@@ -45,12 +45,7 @@ public class CustomerController {
 		for(Customer customer :customers) {
 			if(customer.getSdt().equals(bodyCustomer.getSdt()))
 				return -1;
-		}
-		
-		Notification notification = new Notification();
-		notification.setContent("Chào mừng "+bodyCustomer.getName()+" đã tham gia WFH");
-		notification.setTime(LocalDateTime.now());
-		
+		}		
 		
 		WeatherResponse weatherResponse = weatherService.getWeatherData();		
 		float strideLength = 0.7f;
@@ -80,17 +75,21 @@ public class CustomerController {
 		
 		
 		dailyRepository.save(daily);
+		customerRepository.save(bodyCustomer);
 		
 		
-	    notificationRepository.save(notification);
-	    
-		notification.setCustomer(bodyCustomer);
+		Notification notification = new Notification();
+		notification.setContent("Chào mừng "+bodyCustomer.getName()+" đã tham gia WFH");
+		notification.setTime(LocalDateTime.now()); 
 		
+		notification.setCustomer(bodyCustomer);	
 		List<Notification> notifications= new ArrayList<>();
 		notifications.add(notification);
 	    bodyCustomer.setNotifications(notifications);	    
-		customerRepository.save(bodyCustomer);	
 		notificationRepository.save(notification);
+		customerRepository.save(bodyCustomer);
+		
+		
 		predictionService.createDataTrainCus(bodyCustomer.getId());
 		
 		return bodyCustomer.getId();
