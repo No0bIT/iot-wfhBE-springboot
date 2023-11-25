@@ -1,6 +1,7 @@
 package com.example.IOTBE.component;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.List;
 
@@ -11,8 +12,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.example.IOTBE.model.Customer;
 import com.example.IOTBE.model.Daily;
+import com.example.IOTBE.model.Notification;
 import com.example.IOTBE.repository.CustomerRepository;
 import com.example.IOTBE.repository.DailyRepository;
+import com.example.IOTBE.repository.NotificationRepository;
 import com.example.IOTBE.repository.StepRepository;
 import com.example.IOTBE.service.PredictionService;
 import com.example.IOTBE.service.WeatherService;
@@ -31,7 +34,8 @@ public class DailyComponent {
 	WeatherService weatherService;
 	@Autowired 
 	PredictionService predictionService; 
-	
+	@Autowired 
+	NotificationRepository notificationRepository;
 	@Transactional
 	@Scheduled(cron = "0 0 0 * * *") 
     public void createDaily() {       			
@@ -86,6 +90,13 @@ public class DailyComponent {
 						
 			daily.setCustomer(cus);
 			dailyRepository.save(daily);	
+			customerRepository.save(cus);
+			Notification notification = new Notification();
+    		notification.setContent("Mục tiêu của ngày hôm nay của bạn là "+ stepPrediction+" bước, hãy chinh phục nó nào!");
+    		notification.setTime(LocalDateTime.now());
+    		notification.setCustomer(cus);
+    		notificationRepository.save(notification);
+			customerRepository.save(cus);
 		}
 		
         System.out.println("Creating daily ");
