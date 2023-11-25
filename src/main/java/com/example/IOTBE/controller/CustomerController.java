@@ -80,13 +80,16 @@ public class CustomerController {
 		
 		
 		dailyRepository.save(daily);
+		
+		
 	    notificationRepository.save(notification);
 	    
 		notification.setCustomer(bodyCustomer);
+		
 		List<Notification> notifications= new ArrayList<>();
 		notifications.add(notification);
 	    bodyCustomer.setNotifications(notifications);	    
-		customerRepository.save(bodyCustomer);
+		customerRepository.save(bodyCustomer);	
 		predictionService.createDataTrainCus(bodyCustomer.getId());
 		
 		return bodyCustomer.getId();
